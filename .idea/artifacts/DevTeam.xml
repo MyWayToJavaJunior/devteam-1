@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="DevTeam">
+    <output-path>D:/bin/Apache/Tomcat8/webapps/devteam</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="DevTeam/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="DevTeam" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="javax.servlet.jsp.jstl" />
+          <element id="library" level="project" name="javax.servlet.jsp.jstl-api" />
+          <element id="library" level="project" name="log4j-1.2.17" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.30" />
+          <element id="library" level="project" name="junit-4.7" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
