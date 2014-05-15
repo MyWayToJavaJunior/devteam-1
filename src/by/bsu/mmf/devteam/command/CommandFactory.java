@@ -3,10 +3,7 @@ package by.bsu.mmf.devteam.command;
 import by.bsu.mmf.devteam.command.authorize.Login;
 import by.bsu.mmf.devteam.command.authorize.Logout;
 import by.bsu.mmf.devteam.command.content.*;
-import by.bsu.mmf.devteam.command.handle.CreateOrder;
-import by.bsu.mmf.devteam.command.handle.CreateProject;
-import by.bsu.mmf.devteam.command.handle.PrepareProject;
-import by.bsu.mmf.devteam.command.handle.SkipPreparing;
+import by.bsu.mmf.devteam.command.handle.*;
 import by.bsu.mmf.devteam.command.language.ChangeLanguage;
 import by.bsu.mmf.devteam.command.navigate.NotFound;
 import by.bsu.mmf.devteam.command.navigate.RedirectToDefault;
@@ -49,6 +46,9 @@ public class CommandFactory {
                     break;
                 case SKIP_PREPARING:
                     command = new SkipPreparing();
+                    break;
+                case SET_TIME:
+                    command = new SetElapsedTime();
                     break;
                 case LOGIN:
                     command = new Login();

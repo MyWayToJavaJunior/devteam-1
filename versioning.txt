@@ -1,0 +1,11 @@
+In this project used Semantic Versioning 2.0.0
+
+v1.0.0-alpha
+    # new
+        - Add requirement functions for customers and managers
+v1.1.0-alpha
+    # new
+        - Employee can save and change elapsed time
+        - Incorrect time handling
+    # bugs
+        - Loading data to employee default page

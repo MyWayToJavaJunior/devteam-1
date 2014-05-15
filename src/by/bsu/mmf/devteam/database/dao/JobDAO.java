@@ -24,7 +24,7 @@ public class JobDAO extends AbstractDAO {
             "UPDATE jobs SET cost = ? WHERE id = ?";
 
     private static final String SQL_FIND_JOB_WHERE_BUSY_EMPLOYEE =
-            "SELECT * FROM jobs WHERE id = (SELECT jid FROM employment WHERE uid = 6)";
+            "SELECT * FROM jobs WHERE id = (SELECT jid FROM employment WHERE uid = ?)";
 
     public int getNumberOfJobsInSpecification(int id) throws DAOException{
         connector = new DBConnector();
@@ -105,10 +105,10 @@ public class JobDAO extends AbstractDAO {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                job.setId(resultSet.getInt("id"));
-                job.setName(resultSet.getString("name"));
-                job.setTime(resultSet.getInt("time"));
-                job.setSpecification(resultSet.getInt("sid"));
+                job.setId(resultSet.getInt(1));
+                job.setSpecification(resultSet.getInt(2));
+                job.setName(resultSet.getString(3));
+                job.setTime(resultSet.getInt(6));
             }
         } catch (SQLException e) {
             throw new DAOException(", ", e);

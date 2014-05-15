@@ -145,7 +145,7 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                if (resultSet.getInt(1) == 0) {
+                if (resultSet.getInt(1) != 0) {
                     status = true;
                 }
             }

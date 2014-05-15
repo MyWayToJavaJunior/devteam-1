@@ -3,6 +3,7 @@ package by.bsu.mmf.devteam.command.content;
 import by.bsu.mmf.devteam.command.Command;
 import by.bsu.mmf.devteam.database.dao.JobDAO;
 import by.bsu.mmf.devteam.database.dao.ProjectDAO;
+import by.bsu.mmf.devteam.database.dao.TimeDao;
 import by.bsu.mmf.devteam.database.dao.UserDAO;
 import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
@@ -28,15 +29,16 @@ public class ShowCurrentJob extends Command {
         UserDAO uDao = new UserDAO();
         JobDAO jDao = new JobDAO();
         ProjectDAO pDao = new ProjectDAO();
+        TimeDao tDao = new TimeDao();
         try {
             if (uDao.isEmployeeFree(user.getId())) {
                 request.setAttribute(PARAM_IS_FREE, true);
                 Job job = jDao.getJobWhereEmployeeBusy(user.getId());
+                job.setTime(tDao.getExistingElapsedTime(user.getId(), job.getId()));
                 request.setAttribute(PARAM_JOB, job);
                 Project project = pDao.getProject(job.getSpecification());
                 request.setAttribute(PARAM_PROJECT, project);
                 request.setAttribute(PARAM_MANAGER_MAIL, uDao.getUserMail(project.getManager()));
-
             } else {
                 request.setAttribute(PARAM_IS_FREE, false);
             }

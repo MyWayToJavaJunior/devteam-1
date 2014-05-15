@@ -15,7 +15,7 @@ public class ProjectDAO extends AbstractDAO {
     private static final String SQL_SAVE_PROJECT =
             "INSERT INTO projects (name, manager, sid) VALUES (?, ?, ?)";
 
-    private static final String SQL_FIND_SPECIFICATION =
+    private static final String SQL_FIND_PROJECT =
             "SELECT * FROM projects WHERE sid = ?";
 
     public List<Project> getManagerProjects(int id) throws DAOException {
@@ -59,7 +59,7 @@ public class ProjectDAO extends AbstractDAO {
         Project project = new Project();
         connector = new DBConnector();
         try {
-            preparedStatement = connector.getPreparedStatement(SQL_SAVE_PROJECT);
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT);
             preparedStatement.setInt(1, sid);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
