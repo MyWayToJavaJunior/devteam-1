@@ -15,8 +15,11 @@ public class ProjectDAO extends AbstractDAO {
     private static final String SQL_SAVE_PROJECT =
             "INSERT INTO projects (name, manager, sid) VALUES (?, ?, ?)";
 
-    private static final String SQL_FIND_PROJECT =
+    private static final String SQL_FIND_PROJECT_BY_SPECIFICATION_ID =
             "SELECT * FROM projects WHERE sid = ?";
+
+    private static final String SQL_FIND_LAST_MANAGER_PROJECT_ID =
+            "SELECT id FROM projects WHERE manager = ? ORDER BY id DESC LIMIT 1 ";
 
     public List<Project> getManagerProjects(int id) throws DAOException {
         List<Project> list = new ArrayList<Project>();
@@ -40,7 +43,7 @@ public class ProjectDAO extends AbstractDAO {
         return list;
     }
 
-    public void saveProject(String name, int mid, int sid) throws DAOException {
+    public int saveProject(String name, int mid, int sid) throws DAOException {
         connector = new DBConnector();
         try {
             preparedStatement = connector.getPreparedStatement(SQL_SAVE_PROJECT);
@@ -53,13 +56,14 @@ public class ProjectDAO extends AbstractDAO {
         } finally {
             connector.close();
         }
+        return getLastProjectId(mid);
     }
 
     public Project getProject(int sid) throws DAOException {
         Project project = new Project();
         connector = new DBConnector();
         try {
-            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT);
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT_BY_SPECIFICATION_ID);
             preparedStatement.setInt(1, sid);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -74,6 +78,45 @@ public class ProjectDAO extends AbstractDAO {
             connector.close();
         }
         return project;
+    }
+
+    public Project getProjectById(int pid) throws DAOException {
+        Project project = new Project();
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT_BY_SPECIFICATION_ID);
+            preparedStatement.setInt(1, pid);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                project.setId(resultSet.getInt("id"));
+                project.setName(resultSet.getString("name"));
+                project.setManager(resultSet.getInt("manager"));
+                project.setSpecification(resultSet.getInt("sid"));
+            }
+        } catch (SQLException e) {
+            throw new DAOException(",", e);
+        } finally {
+            connector.close();
+        }
+        return project;
+    }
+
+    public int getLastProjectId(int mid) throws DAOException {
+        int id = 0;
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_LAST_MANAGER_PROJECT_ID);
+            preparedStatement.setInt(1, mid);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(",", e);
+        } finally {
+            connector.close();
+        }
+        return id;
     }
 
 }

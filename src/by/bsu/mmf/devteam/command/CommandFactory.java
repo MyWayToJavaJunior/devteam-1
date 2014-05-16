@@ -23,6 +23,9 @@ public class CommandFactory {
         CommandEnum commandType = getCommandEnum(request.getParameter(EXECUTION_COMMAND));
         if (AccessChecker.checkPermission(request, commandType)) {
             switch (commandType) {
+                case CLOSE_PROJECT:
+                    command = new CloseProject();
+                    break;
                 case CREATE_ORDER:
                     command = new CreateOrder();
                     break;
@@ -40,6 +43,9 @@ public class CommandFactory {
                     break;
                 case SHOW_ORDER_FORM:
                     command = new ShowOrderForm();
+                    break;
+                case SHOW_PROJECT:
+                    command = new ShowManagedProject();
                     break;
                 case SHOW_SPECIFICATIONS:
                     command = new ShowSpecifications();

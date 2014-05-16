@@ -3,6 +3,7 @@ package by.bsu.mmf.devteam.command;
 import by.bsu.mmf.devteam.logic.bean.user.Role;
 
 public enum CommandEnum {
+    CLOSE_PROJECT(Role.MANAGER),
     CREATE_BILL(Role.MANAGER),
     CREATE_ORDER(Role.CUSTOMER),
     CREATE_PROJECT(Role.MANAGER),
@@ -12,6 +13,7 @@ public enum CommandEnum {
     SHOW_JOB(Role.EMPLOYEE),
     SHOW_FINISHED(Role.EMPLOYEE),
     SHOW_ORDER_FORM(Role.CUSTOMER),
+    SHOW_PROJECT(Role.MANAGER),
     SHOW_SPECIFICATIONS(Role.CUSTOMER),
     SKIP_PREPARING(Role.MANAGER),
     SET_TIME(Role.EMPLOYEE),

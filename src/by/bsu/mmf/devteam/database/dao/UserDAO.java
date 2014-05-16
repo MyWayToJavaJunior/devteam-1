@@ -1,10 +1,10 @@
 package by.bsu.mmf.devteam.database.dao;
 
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
 import by.bsu.mmf.devteam.exception.infrastructure.DatabaseDataException;
 import by.bsu.mmf.devteam.logic.bean.user.Role;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.logic.bean.user.RoleDefiner;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import org.apache.log4j.Logger;
 
@@ -41,6 +41,12 @@ public class UserDAO extends AbstractDAO {
 
     private static final String SQL_FIND_USER_MAIL_BY_ID =
             "SELECT mail FROM users WHERE id = ?";
+
+    private static final String SQL_FIND_EMPLOYEE_MAILS_BY_JOB_ID =
+            "SELECT mail FROM users WHERE id IN (SELECT uid FROM employment WHERE jid = ?)";
+
+    private static final String SQL_EXEMPT_EMPLOYEES_BY_SPECIFICATION_ID =
+            "UPDATE employment SET jid = 0 WHERE jid IN (SELECT id FROM jobs WHERE sid = ?)";
 
     public String getPassword(String login) throws DAOException{
         connector = new DBConnector();
@@ -92,7 +98,7 @@ public class UserDAO extends AbstractDAO {
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 String value = resultSet.getString(1);
-                role = defineRole(value);
+                role = RoleDefiner.defineRole(value);
             }
             if (role == null){
                 throw new DatabaseDataException("Role for user: " + id + " not found.");
@@ -175,20 +181,35 @@ public class UserDAO extends AbstractDAO {
         return mail;
     }
 
-    private Role defineRole(String value) {
-        Role role = null;
-        switch (value) {
-            case "customer":
-                role = Role.CUSTOMER;
-                break;
-            case "developer":
-                role = Role.EMPLOYEE;
-                break;
-            case "manager":
-                role = Role.MANAGER;
-                break;
+    public List<String> getEmployeeMailsWorkingOnJob(int jid) throws DAOException {
+        List<String> mails = new ArrayList<>();
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_EMPLOYEE_MAILS_BY_JOB_ID);
+            preparedStatement.setInt(1, jid);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                mails.add(resultSet.getString(1));
+            }
+        } catch (SQLException exception) {
+            throw new DAOException(".", exception);
+        } finally {
+            connector.close();
         }
-        return role;
+        return mails;
+    }
+
+    public void exemptEmployees(int sid) throws DAOException {
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_EXEMPT_EMPLOYEES_BY_SPECIFICATION_ID);
+            preparedStatement.setInt(1, sid);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DAOException(",", e);
+        } finally {
+            connector.close();
+        }
     }
 
 }

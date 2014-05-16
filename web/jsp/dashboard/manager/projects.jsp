@@ -8,12 +8,14 @@
     <title>
         <fmt:message key="jsp.manager.projects.page.title" bundle="${msg}"/>
     </title>
+    <!-- Styles -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
     <c:import url="../common/header.jsp"/>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Menu -->
@@ -33,7 +35,7 @@
                                 <fmt:message key="jsp.manager.projects.table.name" bundle="${msg}"/>
                             </th>
                             <th>
-                                <fmt:message key="jsp.manager.projects.table.employee" bundle="${msg}"/>
+                                <fmt:message key="jsp.manager.projects.table.status" bundle="${msg}"/>
                             </th>
                             <th>
                                 <fmt:message key="jsp.manager.projects.table.time" bundle="${msg}"/>
@@ -45,11 +47,20 @@
                             <tr>
                                 <td><c:out value="${status.count}"/></td>
                                 <td>
-                                    <a href="">
-                                        <c:out value="${project.name}"/>
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${project.status eq 'processing'}">
+                                            <a href="controller?executionCommand=SHOW_PROJECT&projectId=<c:out value="${project.id}"/>">
+                                                <c:out value="${project.name}"/>
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:out value="${project.name}"/>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
-                                <td>10</td>
+                                <td>
+                                    <c:out value="${project.status}"/>
+                                </td>
                                 <td>
                                     <c:out value="${project.time}"/>
                                 </td>

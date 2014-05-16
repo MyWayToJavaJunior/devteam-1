@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Servlet controller
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0
+ */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
     private static Logger logger = Logger.getLogger("activity");

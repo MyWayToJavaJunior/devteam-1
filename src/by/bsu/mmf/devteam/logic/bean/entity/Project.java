@@ -5,7 +5,9 @@ public class Project {
     private String name;
     private int specification;
     private int time;
+    private int employees;
     private int manager;
+    private String status;
 
     public int getId() {
         return id;
@@ -46,4 +48,21 @@ public class Project {
     public void setManager(int manager) {
         this.manager = manager;
     }
+
+    public int getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(int employees) {
+        this.employees = employees;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

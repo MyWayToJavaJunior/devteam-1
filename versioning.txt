@@ -9,3 +9,8 @@ v1.1.0-alpha
         - Incorrect time handling
     # bugs
         - Loading data to employee default page
+v2.0.0-beta
+    # new
+        - Add total elapsed time on manager managed projects page
+        - Add functional to close project for manager
+        - Add functional to create bill, when manager creating new project

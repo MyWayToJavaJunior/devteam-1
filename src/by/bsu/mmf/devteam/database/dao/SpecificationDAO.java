@@ -11,11 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpecificationDAO extends AbstractDAO {
+    /* Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /* Keeps default specification status [waiting] */
     private static final String DEFAULT_SPECIFICATION_STATUS = "waiting";
 
+    /* Query finding  */
     public static final String SQL_FIND_SPECIFICATION_NAME_BY_ID =
             "SELECT name FROM specifications WHERE id = ?";
+
+    /*  */
+    public static final String SQL_FIND_SPECIFICATION_STATUS_BY_ID =
+            "SELECT status FROM specifications WHERE id = ?";
 
     /* Select specifications created by customer */
     public static final String SQL_FIND_SPECIFICATIONS_BY_CUSTOMER_ID =
@@ -36,8 +44,12 @@ public class SpecificationDAO extends AbstractDAO {
     public static final String SQL_INSERT_NEW_SPECIFICATION =
             "INSERT INTO specifications (uid, name, status) VALUES (?, ?, ?)";
 
+    /*  */
     public static final String SQL_FIND_LAST_CUSTOMER_SPECIFICATION_ID =
             "SELECT MAX(id) FROM specifications WHERE uid = ?";
+
+    public static final String SQL_FIND_USER_ID_BY_SPECIFICATION_ID =
+            "SELECT uid FROM specifications WHERE id = ?";
 
     public String getSpecificationName(int id) throws DAOException {
         String name = "";
@@ -55,6 +67,24 @@ public class SpecificationDAO extends AbstractDAO {
             connector.close();
         }
         return name;
+    }
+
+    public String getSpecificationStatus(int id) throws DAOException {
+        String status = "";
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_SPECIFICATION_STATUS_BY_ID);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                status = resultSet.getString(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(".", e);
+        } finally {
+            connector.close();
+        }
+        return status;
     }
 
     public List<Specification> getUserSpecifications(int id) throws DAOException{
@@ -151,6 +181,24 @@ public class SpecificationDAO extends AbstractDAO {
         } finally {
             connector.close();
         }
+    }
+
+    public int getUserId(int sid) throws DAOException {
+        int id = 0;
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_USER_ID_BY_SPECIFICATION_ID);
+            preparedStatement.setInt(1, sid);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(",", e);
+        } finally {
+            connector.close();
+        }
+        return id;
     }
 
 }
