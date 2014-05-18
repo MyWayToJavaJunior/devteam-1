@@ -13,31 +13,33 @@ import java.util.List;
  * Implements DAO pattern and contains methods for work with customer bills.
  *
  * @author Dmitry Petrovich
- * @since 1.0.0
+ * @since 1.0.0-alpha
  */
 public class BillDAO extends AbstractDAO {
     /**
-     *  Keeps query which return customer bills order by newest. <br />
-     *  Requires to set customer id.
+     * Keeps query which return customer bills order by newest. <br />
+     * Requires to set customer id.
      */
     public static final String SQL_FIND_BILLS_FOR_CUSTOMER =
             "SELECT * FROM bills WHERE cid = ? ORDER BY id DESC";
 
     /**
-     *  Keeps query which return customer bills order by newest. <br />
-     *  Requires to set who created (manager id).
+     * Keeps query which return customer bills order by newest. <br />
+     * Requires to set who created (manager id).
      */
     public static final String SQL_FIND_ALL_BILLS_CREATED_BY =
             "SELECT * FROM bills WHERE mid = ? ORDER BY id DESC";
 
+    /**
+     * Keeps query which return name of last added bill.
+     */
     public static final String SQL_FIND_LAST_BILL =
             "SELECT name FROM bills ORDER BY id DESC LIMIT 1";
 
-    /*  */
-    public static final String SQL_FIND_CUSTOMER_BILLS_CREATED_BY =
-            "SELECT * FROM bills WHERE cid = ? AND pid = ?  ORDER BY id DESC";
-
-    /*  */
+    /**
+     * Keeps query which saves new bill in database. <br />
+     * Requires to set bill name
+     */
     public static final String SQL_CREATE_BILL_FOR_CUSTOMER =
             "INSERT INTO bills (name, cid, pid, mid, sum) VALUES (?, ?, ?, ?, ?)";
 
@@ -105,6 +107,12 @@ public class BillDAO extends AbstractDAO {
         return bills;
     }
 
+    /**
+     * This method returns the last created bill name
+     *
+     * @return Name of last created bill
+     * @throws DAOException object if execution of query is failed
+     */
     public String getLastBillName() throws DAOException {
         String name = "";
         connector = new DBConnector();
@@ -124,6 +132,16 @@ public class BillDAO extends AbstractDAO {
         return name;
     }
 
+    /**
+     * This method saves new bill in database
+     *
+     * @param name Name of new bill
+     * @param cid Customer id from table `users`
+     * @param pid Project id from table `projects`
+     * @param mid Manager id from table `users`
+     * @param sum Total cost for payment
+     * @throws DAOException object if execution of query is failed
+     */
     public void createBill(String name, int cid, int pid, int mid, int sum) throws DAOException {
         connector = new DBConnector();
         try {

@@ -10,7 +10,7 @@ import java.sql.Statement;
  * Abstract database data access object
  *
  * @author Dmitry Petrovich
- * @since 1.0.0
+ * @since 1.0.0-alpha
  */
 public class AbstractDAO {
     /* Can be used by heir */

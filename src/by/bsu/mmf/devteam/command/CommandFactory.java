@@ -13,11 +13,28 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * This class realizes command factory
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class CommandFactory {
+    /* Initializing command activity */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Keeps name of parameter which contains command name */
     private static final String EXECUTION_COMMAND = "executionCommand";
+
+    /* Keeps illegal command message */
     private static final String LOGGER_ILLEGAL_COMMAND = "logger.error.illegal.command";
 
+    /**
+     * This method defines command
+     *
+     * @param request HttpServletRequest object
+     * @return Command object
+     */
     public static Command getCommand(HttpServletRequest request) {
         Command command = null;
         CommandEnum commandType = getCommandEnum(request.getParameter(EXECUTION_COMMAND));
@@ -87,6 +104,12 @@ public class CommandFactory {
         return command;
     }
 
+    /**
+     * This method initializing enum from command name
+     *
+     * @param executionCommand Name of command
+     * @return Command enum
+     */
     private static CommandEnum getCommandEnum(String executionCommand) {
         CommandEnum commandEnum = null;
         try {

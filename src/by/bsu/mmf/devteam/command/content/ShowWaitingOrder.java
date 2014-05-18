@@ -10,6 +10,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowWaitingOrder extends Command {
     private static final String PARAM_ORDER_ID_ATTRIBUTE = "orderId";
     private static final String PARAM_LIST_OF_ORDER_JOBS = "orderJobs";

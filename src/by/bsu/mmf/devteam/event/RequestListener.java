@@ -7,7 +7,11 @@ import javax.servlet.ServletRequestListener;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpServletRequest;
 
-
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class RequestListener implements ServletRequestListener {
     private static Logger logger = Logger.getLogger("activity");
 

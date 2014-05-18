@@ -6,6 +6,11 @@ import javax.servlet.ServletRequestAttributeEvent;
 import javax.servlet.ServletRequestAttributeListener;
 import javax.servlet.annotation.WebListener;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 @WebListener
 public class RequestAttributeListener implements ServletRequestAttributeListener {
     private static Logger logger = Logger.getLogger("activity");

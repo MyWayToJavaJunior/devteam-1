@@ -9,6 +9,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class SkipPreparing extends Command {
     private static final String PARAM_WAITING_STATUS = "waiting";
     private static final String PARAM_SPECIFICATION_ID = "specId";

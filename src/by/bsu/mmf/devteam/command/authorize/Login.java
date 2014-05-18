@@ -13,15 +13,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * This class realizes login command
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class Login extends Command {
+    /* Initialize activity logger */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Keeps session lifecycle */
     private static final int SESSION_LIFECYCLE = 600;
+
     private static final String PARAM_USER = "user";
     private static final String PARAM_NAME_EMAIL = "email";
     private static final String PARAM_NAME_PASSWORD = "password";
     private static final String PARAM_FORWARD_LOGIN = "forward.common.login";
     private static final String PARAM_REDIRECT_COMMAND = "controller?executionCommand=REDIRECT";
 
+    /**
+     * Implementation of login command
+     *
+     * @param request HttpServletRequest object
+     * @param response HttpServletResponse object
+     * @throws CommandException If errors occurred when executing command
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String email = request.getParameter(PARAM_NAME_EMAIL);
@@ -47,4 +64,5 @@ public class Login extends Command {
             setForward(ResourceManager.getProperty(PARAM_FORWARD_LOGIN));
         }
     }
+
 }

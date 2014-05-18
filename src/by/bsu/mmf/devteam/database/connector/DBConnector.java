@@ -7,6 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class DBConnector {
     private ConnectionPool pool = ConnectionPool.getInstance();
     private Connection connection;

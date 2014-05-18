@@ -11,6 +11,11 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowBills extends Command {
     private static Logger logger = Logger.getLogger("activity");
     private static final String CUSTOMER_BILLS_PAGE = "forward.customer.bills";

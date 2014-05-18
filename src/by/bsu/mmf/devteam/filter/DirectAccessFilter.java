@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 @WebFilter(urlPatterns = {"/jsp/*"},
            initParams = {
                    @WebInitParam(name = "index", value = "/index.jsp", description = "Index page")

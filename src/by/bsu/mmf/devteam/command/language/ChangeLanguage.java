@@ -8,6 +8,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ChangeLanguage extends Command {
     private static final String ATTRIBUTE_USER = "user";
     private static final String REDIRECT_TO_DEFAULT_PAGE = "forward.common.redirect.command";

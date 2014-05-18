@@ -12,6 +12,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 2.0.0-beta
+ */
 public class CloseProject extends Command {
     private static final String PARAM_PROJECT_ID = "projectId";
     private static final String FORWARD_PAGE = "forward.manager.projects";

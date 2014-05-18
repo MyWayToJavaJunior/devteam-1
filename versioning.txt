@@ -14,3 +14,11 @@ v2.0.0-beta
         - Add total elapsed time on manager managed projects page
         - Add functional to close project for manager
         - Add functional to create bill, when manager creating new project
+v2.1.0-beta
+    # new
+        - Change logger configuration
+        - Add part of code comments
+    # bugs
+        - Incorrect project name encoding when creating new project
+        - Incorrect specification name encoding when creating new specification
+        - Incorrect loading project details (invalid constant in project dao class)

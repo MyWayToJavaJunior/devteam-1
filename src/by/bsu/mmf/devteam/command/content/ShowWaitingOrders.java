@@ -9,6 +9,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowWaitingOrders extends Command {
     private static final String PARAM_FORWARD_WAITING_ORDERS_PAGE = "forward.manager.waiting.orders";
     private static final String PARAM_ORDERS_LIST = "ordersList";

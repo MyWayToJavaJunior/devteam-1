@@ -9,6 +9,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowOrderForm extends Command {
     private static final String PARAM_QUALIFICATIONS = "qualifications";
     private static final String FORWARD_ORDER_FORM = "forward.customer.add.specification";

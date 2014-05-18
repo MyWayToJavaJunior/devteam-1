@@ -3,24 +3,63 @@ package by.bsu.mmf.devteam.database.dao;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Project;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implements DAO pattern
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ProjectDAO extends AbstractDAO {
+    /* Initializing database activity logger */
+    private static Logger logger = Logger.getLogger("db");
+
+    /**
+     * Keeps query which return project created by certain manager. <br />
+     * Requires to set manager id.
+     */
     private static final String SQL_FIND_MANAGER_PROJECTS =
             "SELECT * FROM projects WHERE manager = ?";
 
+    /**
+     * Keeps query which saves new project in database. <br />
+     * Requires to set: project name, manager is, specification id.
+     */
     private static final String SQL_SAVE_PROJECT =
             "INSERT INTO projects (name, manager, sid) VALUES (?, ?, ?)";
 
+    /**
+     * Keeps query which return project created for certain specification. <br />
+     * Requires to set specification id.
+     */
     private static final String SQL_FIND_PROJECT_BY_SPECIFICATION_ID =
             "SELECT * FROM projects WHERE sid = ?";
 
+    /**
+     * Keeps query which searches last project created by certain manager. <br />
+     * Requires to set manager id.
+     */
     private static final String SQL_FIND_LAST_MANAGER_PROJECT_ID =
             "SELECT id FROM projects WHERE manager = ? ORDER BY id DESC LIMIT 1 ";
 
+    /**
+     * Keeps query which searches project by specification id.
+     */
+    private static final String SQL_FIND_PROJECT_BY_PROJECT_ID =
+            "SELECT * FROM projects WHERE id = ?";
+
+    /**
+     * This method returns list of all manager projects.
+     *
+     * @param id Manager id
+     * @return List of projects
+     * @throws DAOException object if execution of query is failed
+     */
     public List<Project> getManagerProjects(int id) throws DAOException {
         List<Project> list = new ArrayList<Project>();
         connector = new DBConnector();
@@ -43,6 +82,15 @@ public class ProjectDAO extends AbstractDAO {
         return list;
     }
 
+    /**
+     * This method saves new project in database.
+     *
+     * @param name Project name
+     * @param mid Manager id
+     * @param sid Specification id
+     * @return Id of saved project
+     * @throws DAOException object if execution of query is failed
+     */
     public int saveProject(String name, int mid, int sid) throws DAOException {
         connector = new DBConnector();
         try {
@@ -59,6 +107,13 @@ public class ProjectDAO extends AbstractDAO {
         return getLastProjectId(mid);
     }
 
+    /**
+     * This method returns project by specification id.
+     *
+     * @param sid Specification id
+     * @return Project object
+     * @throws DAOException object if execution of query is failed
+     */
     public Project getProject(int sid) throws DAOException {
         Project project = new Project();
         connector = new DBConnector();
@@ -80,11 +135,18 @@ public class ProjectDAO extends AbstractDAO {
         return project;
     }
 
+    /**
+     * This method returns project object by project id.
+     *
+     * @param pid Project id
+     * @return Project object
+     * @throws DAOException object if execution of query is failed
+     */
     public Project getProjectById(int pid) throws DAOException {
         Project project = new Project();
         connector = new DBConnector();
         try {
-            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT_BY_SPECIFICATION_ID);
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_PROJECT_BY_PROJECT_ID);
             preparedStatement.setInt(1, pid);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -101,6 +163,13 @@ public class ProjectDAO extends AbstractDAO {
         return project;
     }
 
+    /**
+     * This method returns last created project by certain manager.
+     *
+     * @param mid Manager id
+     * @return Last created project id created by manager
+     * @throws DAOException object if execution of query is failed
+     */
     public int getLastProjectId(int mid) throws DAOException {
         int id = 0;
         connector = new DBConnector();

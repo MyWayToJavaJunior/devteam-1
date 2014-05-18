@@ -15,10 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 2.0.0-beta
+ */
 public class ShowManagedProject extends Command {
     private static final String FORWARD_TO_PROJECT_PAGE = "forward.manager.project";
     private static final String USER_ATTRIBUTE = "user";
-    private static final String PARAM_PROJECT_OBJ = "projectObj";
+    private static final String PARAM_PROJECT_NAME = "projectName";
     private static final String PARAM_PROJECT_ID = "projectId";
     private static final String PARAM_JOBS_LIST = "jobsList";
     private static final String PARAM_JOBS_MAP = "jobsMap";
@@ -33,7 +38,7 @@ public class ShowManagedProject extends Command {
         UserDAO uDao = new UserDAO();
         TimeDao tDao = new TimeDao();
         try {
-            Project project = pDao.getProject(pid);
+            Project project = pDao.getProjectById(pid);
             List<Job> jobs = jDao.getSpecificationJobs(project.getSpecification());
             Map<Integer, Map> detailedJobs = new HashMap<>();
             for (Job job : jobs) {
@@ -46,7 +51,7 @@ public class ShowManagedProject extends Command {
             }
             request.setAttribute(PARAM_JOBS_LIST, jobs);
             request.setAttribute(PARAM_JOBS_MAP, detailedJobs);
-            request.setAttribute(PARAM_PROJECT_OBJ, project);
+            request.setAttribute(PARAM_PROJECT_NAME, project.getName());
         } catch (DAOException e) {
             throw new CommandException(",", e);
         } finally {

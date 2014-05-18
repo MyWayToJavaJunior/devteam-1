@@ -1,5 +1,10 @@
 package by.bsu.mmf.devteam.logic.bean.entity;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class Specification {
     private int id;
     private int jobs;

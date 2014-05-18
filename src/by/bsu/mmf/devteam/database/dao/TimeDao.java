@@ -5,6 +5,11 @@ import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 
 import java.sql.SQLException;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class TimeDao extends AbstractDAO {
     private static final String SQL_SET_ELAPSED_TIME =
             "INSERT INTO elapsed (jid, uid, time) VALUES (?, ?, ?)";

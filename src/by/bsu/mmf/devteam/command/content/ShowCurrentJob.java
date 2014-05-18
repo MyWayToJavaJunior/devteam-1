@@ -15,6 +15,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowCurrentJob extends Command {
     private static final String FORWARD_PAGE = "forward.employee.current.project";
     private static final String PARAM_USER_ATTRIBUTE = "user";

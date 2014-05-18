@@ -17,7 +17,7 @@ import java.io.IOException;
  * Servlet controller
  *
  * @author Dmitry Petrovich
- * @since 1.0.0
+ * @since 1.0.0-alpha
  */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {

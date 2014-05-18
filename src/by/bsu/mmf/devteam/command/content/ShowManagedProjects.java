@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ShowManagedProjects extends Command {
     private static final String PARAM_LIST_OF_PROJECT = "projectList";
     private static final String PARAM_USER_ATTRIBUTE = "user";

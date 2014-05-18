@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class PrepareProject extends Command {
     private static final String PARAM_PROCESSING_STATUS = "processing";
     private static final String PARAM_ORDER_ID = "orderId";

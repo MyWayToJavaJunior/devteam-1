@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <fmt:setLocale value="${sessionScope.user.language}"/>
 <fmt:setBundle basename="by.bsu.mmf.devteam.resource.Resource" var="msg"/>
+<!DOCTYPE html>
 <html>
 <head>
     <title>

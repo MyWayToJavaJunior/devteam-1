@@ -8,6 +8,11 @@ import by.bsu.mmf.devteam.resource.ResourceManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class RedirectToDefault extends Command {
     private static final String EXECUTION_COMMAND = "executionCommand";
     private static final String PARAM_USER = "user";

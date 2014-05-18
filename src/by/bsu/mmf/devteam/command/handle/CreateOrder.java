@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class CreateOrder extends Command {
     private static Logger logger = Logger.getLogger("activity");
     private static final String PARAM_USER = "user";
@@ -28,7 +33,8 @@ public class CreateOrder extends Command {
             JobDAO jDao = new JobDAO();
             QualificationDAO qDao = new QualificationDAO();
             try {
-                int specId = sDao.saveSpecification(user.getId(), request.getParameter(PARAM_SPECIFICATION_NAME));
+                String specName = new String(request.getParameter(PARAM_SPECIFICATION_NAME).getBytes("UTF-8"), "CP1251");
+                int specId = sDao.saveSpecification(user.getId(), specName);
                 int jobs = Integer.parseInt(request.getParameter("jobsCount"));
                 for (int i = 1; i <= jobs; i++) {
                     String name = new String(request.getParameter("job" + i).getBytes("UTF-8"), "CP1251");

@@ -2,6 +2,11 @@ package by.bsu.mmf.devteam.database.pool;
 
 import java.util.ResourceBundle;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class PoolConfiguration {
     private final String PATH = "by.bsu.mmf.devteam.database.pool.pool";
     private ResourceBundle bundle = ResourceBundle.getBundle(PATH);

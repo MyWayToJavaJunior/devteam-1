@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ResourceTag extends TagSupport {
     private static final String RESOURCE_PATH = "by.bsu.mmf.devteam.resource.Resource";
     private String key;

@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+/**
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class ConnectionPool {
     private static Logger logger = Logger.getLogger("db");
     private static ConnectionPool instance;

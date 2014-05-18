@@ -4,11 +4,15 @@ import by.bsu.mmf.devteam.command.Command;
 import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
+/**
+ * Implementing command pattern.
+ *
+ * @author Dmitry Petrovich
+ * @since 1.0.0-alpha
+ */
 public class Logout extends Command {
     private static final String LOGIN_PAGE = "forward.common.login";
 
