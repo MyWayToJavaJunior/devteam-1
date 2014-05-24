@@ -13,6 +13,7 @@
           <element id="library" level="project" name="log4j-1.2.17" />
           <element id="library" level="project" name="mysql-connector-java-5.1.30" />
           <element id="library" level="project" name="junit-4.7" />
+          <element id="library" level="project" name="bean-validator" />
         </element>
       </element>
     </root>

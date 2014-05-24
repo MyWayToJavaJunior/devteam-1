@@ -20,11 +20,23 @@ import java.io.UnsupportedEncodingException;
  * @since 1.0.0-alpha
  */
 public class CreateOrder extends Command {
+    /* Initialize activity logger */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Logger messages */
+    private static final String MSG_EXECUTE_ERROR = "";
+
     private static final String PARAM_USER = "user";
     private static final String PARAM_SPECIFICATION_NAME = "nameOfNewSpec";
     private static final String PARAM_FORWARD_PAGE = "forward.customer.add.specification";
 
+    /**
+     * Implementation of command
+     *
+     * @param request HttpServletRequest object
+     * @param response HttpServletResponse object
+     * @throws CommandException If an error has occurred on runtime
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {

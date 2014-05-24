@@ -10,24 +10,36 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 /**
+ * This class realizes class singleton and implements custom connection pool.
  *
  * @author Dmitry Petrovich
  * @since 1.0.0-alpha
  */
 public class ConnectionPool {
+    /* Initializes database logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /* Class fields */
     private static ConnectionPool instance;
     private BlockingQueue<Connection> pool;
     private PoolConfiguration config;
+
+    /* Logger messages */
     private static final String LOGGER_LOAD_JDBC_ERROR = "logger.error.jdbc.load";
     private static final String LOGGER_GET_CONNECTION_ERROR = "logger.error.get.connection";
     private static final String LOGGER_TAKE_CONNECTION_ERROR = "logger.error.take.connection";
     private static final String LOGGER_PUT_CONNECTION_ERROR = "logger.error.put.connection";
 
+    /* Constructor */
     public ConnectionPool() {
         initPool();
     }
 
+    /**
+     * Helps to realize singleton pattern
+     *
+     * @return ConnectionPool instance
+     */
     public static ConnectionPool getInstance() {
         if (instance == null) {
             instance = new ConnectionPool();
@@ -35,6 +47,9 @@ public class ConnectionPool {
         return instance;
     }
 
+    /**
+     * This method initializes pool.
+     */
     private void initPool()  {
         config = new PoolConfiguration();
         pool = new ArrayBlockingQueue<Connection>(config.getMaxSize(), true);
@@ -50,6 +65,11 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * This method returns alive connection with database
+     *
+     * @return Alive Connection object
+     */
     public Connection getConnection() {
         Connection connection = null;
         try {
@@ -71,6 +91,11 @@ public class ConnectionPool {
         return connection;
     }
 
+    /**
+     * This method return used connection to pool
+     *
+     * @param connection Connection object
+     */
     public void returnConnection(Connection connection) {
         if (connection != null) {
             try {

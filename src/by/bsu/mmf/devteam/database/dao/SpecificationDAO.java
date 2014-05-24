@@ -3,6 +3,7 @@ package by.bsu.mmf.devteam.database.dao;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Specification;
+import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -17,10 +18,28 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class SpecificationDAO extends AbstractDAO {
-    /* Initializing database activity logger */
+    /** Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
 
-    /* Keeps default specification status [waiting] */
+    /** Specification logger messages */
+    private static final String ERROR_GET_SPEC_NAME = "logger.db.error.get.specification.name";
+    private static final String INFO_GET_SPEC_NAME = "logger.db.info.get.specification.name";
+    private static final String ERROR_GET_SPEC_STATUS = "logger.db.error.get.specification.status";
+    private static final String INFO_GET_SPEC_STATUS = "logger.db.info.get.specification.status";
+    private static final String ERROR_GET_USER_SPECS = "logger.db.error.get.user.specifications";
+    private static final String INFO_GET_USER_SPECS = "logger.db.info.get.user.specifications";
+    private static final String ERROR_GET_WAITING_SPECS = "logger.db.error.get.waiting.specifications";
+    private static final String INFO_GET_WAITING_SPECS = "logger.db.info.get.waiting.specifications";
+    private static final String ERROR_SAVE_SPEC = "logger.db.error.save.specification";
+    private static final String INFO_SAVE_SPEC = "logger.db.info.save.specification";
+    private static final String ERROR_GET_LAST_SPEC_ID = "logger.db.error.get.last.spec.id";
+    private static final String INFO_GET_LAST_SPEC_ID = "logger.db.info.get.last.spec.id";
+    private static final String ERROR_SET_SPEC_STATUS = "logger.db.error.set.spec.status";
+    private static final String INFO_SET_SPEC_STATUS = "logger.db.info.set.spec.status";
+    private static final String ERROR_GET_AUTHOR_OF_SPEC = "logger.db.error.get.author.id.of.spec";
+    private static final String INFO_GET_AUTHOR_OF_SPEC = "logger.db.info.get.author.id.of.spec";
+
+    /** Keeps default specification status [waiting] */
     private static final String DEFAULT_SPECIFICATION_STATUS = "waiting";
 
     /**
@@ -93,10 +112,11 @@ public class SpecificationDAO extends AbstractDAO {
                 name = resultSet.getString(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(".", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_SPEC_NAME) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_SPEC_NAME) + id);
         return name;
     }
 
@@ -118,10 +138,11 @@ public class SpecificationDAO extends AbstractDAO {
                 status = resultSet.getString(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(".", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_SPEC_STATUS) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_SPEC_STATUS) + id);
         return status;
     }
 
@@ -149,10 +170,11 @@ public class SpecificationDAO extends AbstractDAO {
                 list.add(specification);
             }
         } catch (SQLException e) {
-            throw new DAOException("Get user specifications failed", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_USER_SPECS) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_USER_SPECS) + id);
         return list;
     }
 
@@ -179,10 +201,11 @@ public class SpecificationDAO extends AbstractDAO {
                 list.add(spec);
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_WAITING_SPECS), e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_WAITING_SPECS));
         return list;
     }
 
@@ -203,10 +226,11 @@ public class SpecificationDAO extends AbstractDAO {
             preparedStatement.setBytes(3, DEFAULT_SPECIFICATION_STATUS.getBytes());
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(".", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SAVE_SPEC) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SAVE_SPEC) + id);
         return getLastSpecificationId(id);
     }
 
@@ -228,10 +252,11 @@ public class SpecificationDAO extends AbstractDAO {
                 id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_LAST_SPEC_ID) +userId, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_LAST_SPEC_ID) + userId);
         return id;
     }
 
@@ -250,10 +275,11 @@ public class SpecificationDAO extends AbstractDAO {
             preparedStatement.setInt(2, id);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SET_SPEC_STATUS) + status, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SET_SPEC_STATUS));
     }
 
     /**
@@ -274,10 +300,11 @@ public class SpecificationDAO extends AbstractDAO {
                 id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_AUTHOR_OF_SPEC) + sid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_AUTHOR_OF_SPEC) + sid);
         return id;
     }
 

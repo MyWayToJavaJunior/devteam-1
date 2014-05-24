@@ -21,12 +21,24 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class CreateProject extends Command {
+    /* Initialize activity logger */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Logger messages */
+    private static final String MSG_EXECUTE_ERROR = "";
+
     private static final String PARAM_USER_ATTRIBUTE = "user";
     private static final String PARAM_SPECIFICATION_ID = "specId";
     private static final String PARAM_SPEC_NAME = "nameOfNewSpec";
     private static final String FORWARD_CUSTOMER_PROJECTS = "redirect.manager.projects";
 
+    /**
+     * Implementation of command
+     *
+     * @param request HttpServletRequest object
+     * @param response HttpServletResponse object
+     * @throws CommandException If an error has occurred on runtime
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         int specId = Integer.parseInt(request.getParameter(PARAM_SPECIFICATION_ID));

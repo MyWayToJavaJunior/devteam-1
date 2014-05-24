@@ -8,9 +8,14 @@ import java.util.ResourceBundle;
  * @since 1.0.0-alpha
  */
 public class PoolConfiguration {
+    /* Configuration file path */
     private final String PATH = "by.bsu.mmf.devteam.database.pool.pool";
+
+    /* Initializes default settings */
     private ResourceBundle bundle = ResourceBundle.getBundle(PATH);
     private String type = bundle.getString("default");
+
+    /* Configuration options */
     private String driver;
     private String url;
     private String user;
@@ -18,12 +23,17 @@ public class PoolConfiguration {
     private int minSize;
     private int maxSize;
     private int maxConnections;
-    private int timeout;
 
+    /**
+     * Constructor
+     */
     public PoolConfiguration() {
         init();
     }
 
+    /**
+     * This method initializes fields by default options
+     */
     private void init() {
         driver = bundle.getString(type + ".driver");
         url = bundle.getString(type + ".url");
@@ -32,38 +42,69 @@ public class PoolConfiguration {
         minSize = Integer.parseInt(bundle.getString(type + ".min.size"));
         maxSize = Integer.parseInt(bundle.getString(type + ".max.size"));
         maxConnections = Integer.parseInt(bundle.getString(type + ".max.connections"));
-        timeout = Integer.parseInt(bundle.getString(type + ".timeout"));
     }
 
+    /**
+     * Getter for driver option
+     *
+     * @return Driver class
+     */
     public String getDriver() {
         return driver;
     }
 
+    /**
+     * Getter for database url
+     *
+     * @return Database url
+     */
     public String getUrl() {
         return url;
     }
 
+    /**
+     * Getter for user name
+     *
+     * @return Database user name
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     * Getter for user password
+     *
+     * @return Database user password
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Getter for minimum pool size
+     *
+     * @return Minimum pool size
+     */
     public int getMinSize() {
         return minSize;
     }
 
+    /**
+     * Getter for maximum pool size
+     *
+     * @return Maximum pool size
+     */
     public int getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * Getter for number of maximum alive connections
+     *
+     * @return Number of maximum alive connections
+     */
     public int getMaxConnections() {
         return maxConnections;
     }
 
-    public int getTimeout() {
-        return timeout;
-    }
 }

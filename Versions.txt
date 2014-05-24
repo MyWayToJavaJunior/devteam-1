@@ -1,4 +1,6 @@
-In this project used Semantic Versioning 2.0.0
+In this project used Semantic Versioning 2.0.0 rules.
+
+CHANGE LOG:
 
 v1.0.0-alpha
     # new
@@ -22,3 +24,9 @@ v2.1.0-beta
         - Incorrect project name encoding when creating new project
         - Incorrect specification name encoding when creating new specification
         - Incorrect loading project details (invalid constant in project dao class)
+v2.2.0-beta
+    # new
+        - Add more logger to code
+        - Add comments
+        - Add verifiable beans
+        - Add tests

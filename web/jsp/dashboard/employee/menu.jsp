@@ -25,20 +25,6 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav nav-sidebar">
-            <c:choose>
-                <c:when test="${sessionScope.currentPage eq 'jobs'}">
-                    <li class="active">
-                </c:when>
-                <c:otherwise>
-                    <li>
-                </c:otherwise>
-            </c:choose>
-                <a href="">
-                    <fmt:message key="jsp.employee.menu.finished.jobs" bundle="${msg}"/>
-                </a>
-            </li>
-        </ul>
     </div>
 </body>
 </html>

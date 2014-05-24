@@ -1,8 +1,11 @@
 package by.bsu.mmf.devteam.database.dao;
 
 import by.bsu.mmf.devteam.database.connector.DBConnector;
+import by.bsu.mmf.devteam.exception.data.ResourceDataException;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Bill;
+import by.bsu.mmf.devteam.resource.ResourceManager;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,6 +19,18 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class BillDAO extends AbstractDAO {
+    /** Initializes logger */
+    private static Logger logger = Logger.getLogger("db");
+
+    /** Logger messages */
+    private static final String ERROR_GET_CUSTOMER_BILLS = "logger.db.error.get.customer.bills";
+    private static final String INFO_GET_CUSTOMER_BILLS = "logger.db.info.get.customer.bills";
+    private static final String ERROR_GET_MANAGER_BILLS = "logger.db.error.get.manager.bills";
+    private static final String INFO_GET_MANAGER_BILLS = "logger.db.info.get.manager.bills";
+    private static final String ERROR_GET_LAST_BILL_NAME = "logger.db.error.get.last.bill.name";
+    private static final String ERROR_CREATE_BILL = "logger.db.error.create.bill";
+    private static final String INFO_CREATE_BILL = "logger.db.info.create.bill";
+
     /**
      * Keeps query which return customer bills order by newest. <br />
      * Requires to set customer id.
@@ -68,10 +83,11 @@ public class BillDAO extends AbstractDAO {
                 bills.add(bill);
             }
         } catch (SQLException e) {
-            throw new DAOException("SQl error when trying to get list of customer bills.", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_CUSTOMER_BILLS), e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_CUSTOMER_BILLS) + id);
         return bills;
     }
 
@@ -100,10 +116,11 @@ public class BillDAO extends AbstractDAO {
                 bills.add(bill);
             }
         } catch (SQLException e) {
-            throw new DAOException("SQl error when trying to get list of manager bills.", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_MANAGER_BILLS), e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_MANAGER_BILLS) + id);
         return bills;
     }
 
@@ -125,7 +142,7 @@ public class BillDAO extends AbstractDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_LAST_BILL_NAME), e);
         } finally {
             connector.close();
         }
@@ -153,10 +170,11 @@ public class BillDAO extends AbstractDAO {
             preparedStatement.setInt(5, sum);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_CREATE_BILL), e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_CREATE_BILL) + name);
     }
 
 }

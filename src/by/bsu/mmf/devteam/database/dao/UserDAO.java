@@ -6,6 +6,7 @@ import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.user.RoleDefiner;
 import by.bsu.mmf.devteam.logic.bean.user.User;
+import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -19,8 +20,29 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class UserDAO extends AbstractDAO {
-    /* Initializing database activity logger */
+    /** Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /** Logger messages */
+    private static final String ERROR_GET_PASSWORD = "logger.db.error.get.password";
+    private static final String INFO_GET_PASSWORD = "logger.db.info.get.password";
+    private static final String ERROR_GET_USER = "logger.db.error.get.user";
+    private static final String INFO_GET_USER = "logger.db.info.get.user";
+    private static final String ERROR_GET_USER_ROLE = "logger.db.error.get.user.role";
+    private static final String INFO_GET_USER_ROLE = "logger.db.info.get.user.role";
+    private static final String DATA_ROLE_NOT_FOUND = "logger.db.data.role.not.found";
+    private static final String ERROR_GET_USER_MAILS = "logger.db.error.get.user.mails";
+    private static final String INFO_GET_USER_MAILS = "logger.db.info.get.user.mails";
+    private static final String ERROR_TAKE_EMPLOYEE = "logger.db.error.take.employee";
+    private static final String INFO_TAKE_EMPLOYEE = "logger.db.info.take.employee";
+    private static final String ERROR_IS_FREE_EMPLOYEE = "logger.db.error.is.free.employee";
+    private static final String INFO_IS_FREE_EMPLOYEE = "logger.db.info.is.free.employee";
+    private static final String ERROR_GET_USER_MAIL = "logger.db.error.get.user.mail";
+    private static final String INFO_GET_USER_MAIL = "logger.db.info.get.user.mail";
+    private static final String ERROR_GET_WORKING_MAILS = "logger.db.error.get.users.working.on.job";
+    private static final String INFO_GET_WORKING_MAILS = "logger.db.info.get.users.working.on.job";
+    private static final String ERROR_EXEMPT_EMPLOYEES = "logger.db.error.exempt.employee";
+    private static final String INFO_EXEMPT_EMPLOYEES = "logger.db.info.exempt.employee";
 
     /**
      * This query searches user hashed password. <br />
@@ -98,20 +120,22 @@ public class UserDAO extends AbstractDAO {
      * @throws DAOException object if execution of query is failed
      */
     public String getPassword(String login) throws DAOException{
+        String password = "";
         connector = new DBConnector();
         try {
             preparedStatement = connector.getPreparedStatement(SQL_FIND_PASSWORD_BY_LOGIN);
             preparedStatement.setBytes(1, login.getBytes());
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getString(1);
+                password =  resultSet.getString(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_PASSWORD) + login, e);
         } finally {
             connector.close();
         }
-        return "";
+        logger.info(ResourceManager.getProperty(INFO_GET_PASSWORD) + login);
+        return password;
     }
 
     /**
@@ -139,10 +163,11 @@ public class UserDAO extends AbstractDAO {
                 user = dbUser;
             }
         } catch (SQLException e) {
-            throw new DAOException("SQL error when searching a user by name and password", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_USER) + email, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_USER) + email);
         return user;
     }
 
@@ -165,13 +190,14 @@ public class UserDAO extends AbstractDAO {
                 role = RoleDefiner.defineRole(value);
             }
             if (role == null){
-                throw new DatabaseDataException("Role for user: " + id + " not found.");
+                throw new DatabaseDataException(ResourceManager.getProperty(DATA_ROLE_NOT_FOUND) + id);
             }
-        } catch (SQLException exception) {
-            throw new DAOException("", exception);
+        } catch (SQLException e) {
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_USER_ROLE) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_USER_ROLE) + id);
         return role;
     }
 
@@ -192,11 +218,12 @@ public class UserDAO extends AbstractDAO {
             while (resultSet.next()) {
                 mails.add(resultSet.getString(1));
             }
-        } catch (SQLException exception) {
-            throw new DAOException(".", exception);
+        } catch (SQLException e) {
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_USER_MAILS) + qualification, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_USER_MAILS) + qualification);
         return mails;
     }
 
@@ -215,10 +242,11 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setBytes(2, mail.getBytes());
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_TAKE_EMPLOYEE) + mail, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_TAKE_EMPLOYEE) + mail + "," + jid);
     }
 
     /**
@@ -241,10 +269,11 @@ public class UserDAO extends AbstractDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException(", ", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_IS_FREE_EMPLOYEE) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_IS_FREE_EMPLOYEE) + id);
         return status;
     }
 
@@ -266,10 +295,11 @@ public class UserDAO extends AbstractDAO {
                 mail = resultSet.getString("mail");
             }
         } catch (SQLException e) {
-            throw new DAOException(", ", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_USER_MAIL) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_USER_MAIL) + id);
         return mail;
     }
 
@@ -290,11 +320,12 @@ public class UserDAO extends AbstractDAO {
             while (resultSet.next()) {
                 mails.add(resultSet.getString(1));
             }
-        } catch (SQLException exception) {
-            throw new DAOException(".", exception);
+        } catch (SQLException e) {
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_WORKING_MAILS) + jid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_WORKING_MAILS) + jid);
         return mails;
     }
 
@@ -311,10 +342,11 @@ public class UserDAO extends AbstractDAO {
             preparedStatement.setInt(1, sid);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_EXEMPT_EMPLOYEES) + sid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_EXEMPT_EMPLOYEES) + sid);
     }
 
 }

@@ -17,21 +17,36 @@ import javax.servlet.http.HttpServletResponse;
  * @since 1.0.0-alpha
  */
 public class ShowSpecifications extends Command {
+    /* Initialize activity logger */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Logger messages */
+    private static final String MSG_EXECUTE_ERROR = "logger.error.execute.specifications";
+    private static final String MSG_REQUESTED = "logger.activity.requested.specifications";
+
+    /* Attributes and parameters */
     private static final String LIST_OF_SPECIFICATIONS = "specificationsList";
-    private static final String PARAM_USER = "user";
+    private static final String USER_ATTRIBUTE = "user";
     private static final String SPECIFICATIONS_PAGE = "forward.customer.specifications";
 
+    /**
+     * Implementation of command
+     *
+     * @param request HttpServletRequest object
+     * @param response HttpServletResponse object
+     * @throws CommandException If an error has occurred on runtime
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        User user = (User)request.getSession().getAttribute(PARAM_USER);
+        User user = (User)request.getSession().getAttribute(USER_ATTRIBUTE);
         SpecificationDAO dao = new SpecificationDAO();
         try {
             request.setAttribute(LIST_OF_SPECIFICATIONS, dao.getUserSpecifications(user.getId()));
         } catch (DAOException e) {
-            throw new CommandException("Exception in ShowSpecification command", e);
+            throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR) + user.getId(), e);
         }
         setForward(ResourceManager.getProperty(SPECIFICATIONS_PAGE));
+        logger.info(ResourceManager.getProperty(MSG_REQUESTED) + user.getId());
     }
 
 }

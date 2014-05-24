@@ -3,6 +3,7 @@ package by.bsu.mmf.devteam.database.dao;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Job;
+import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -17,8 +18,20 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class JobDAO extends AbstractDAO {
-    /* Initializing database activity logger */
+    /** Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /** Logger messages */
+    private static final String ERROR_NUMBER_OF_JOBS = "logger.db.error.number.of.jobs";
+    private static final String INFO_NUMBER_OF_JOBS = "logger.db.info.number.of.jobs";
+    private static final String ERROR_SPECIFICATION_JOBS = "logger.db.error.specification.jobs";
+    private static final String INFO_SPECIFICATION_JOBS = "logger.db.info.specification.jobs";
+    private static final String ERROR_SAVE_JOB = "logger.db.error.save.job";
+    private static final String INFO_SAVE_JOB = "logger.db.info.save.job";
+    private static final String ERROR_SET_JOB_COST = "logger.db.error.set.job.cost";
+    private static final String INFO_SET_JOB_COST = "logger.db.info.set.job.cost";
+    private static final String ERROR_JOB_WHERE_BUSY = "logger.db.error.get.job.where.emp.busy";
+    private static final String INFO_JOB_WHERE_BUSY = "logger.db.info.get.job.where.emp.busy";
 
     /**
      * Keeps query which return the number of jobs in specification. <br />
@@ -75,10 +88,11 @@ public class JobDAO extends AbstractDAO {
                 jobs = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(e.getSQLState(), e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_NUMBER_OF_JOBS) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_NUMBER_OF_JOBS) + id);
         return jobs;
     }
 
@@ -105,10 +119,11 @@ public class JobDAO extends AbstractDAO {
                 jobs.add(job);
             }
         } catch (SQLException e) {
-            throw new DAOException(".", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SPECIFICATION_JOBS) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SPECIFICATION_JOBS) + id);
         return jobs;
     }
 
@@ -131,10 +146,11 @@ public class JobDAO extends AbstractDAO {
             preparedStatement.setInt(4, qualification);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SAVE_JOB) + name, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SAVE_JOB) + name);
     }
 
     /**
@@ -151,10 +167,11 @@ public class JobDAO extends AbstractDAO {
             preparedStatement.setInt(2, id);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SET_JOB_COST) + cost, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SET_JOB_COST) + id);
     }
 
     /**
@@ -178,10 +195,11 @@ public class JobDAO extends AbstractDAO {
                 job.setTime(resultSet.getInt(6));
             }
         } catch (SQLException e) {
-            throw new DAOException(", ", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_JOB_WHERE_BUSY) + id, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_JOB_WHERE_BUSY) + id);
         return job;
     }
 

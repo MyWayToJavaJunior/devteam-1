@@ -20,17 +20,25 @@ import javax.servlet.http.HttpSession;
  * @since 1.0.0-alpha
  */
 public class Login extends Command {
-    /* Initialize activity logger */
+    /* Initializes activity logger */
     private static Logger logger = Logger.getLogger("activity");
+
+    /* Logger messages */
+    private static final String MSG_EXECUTE_ERROR = "logger.error.execute.login";
+    private static final String MSG_SIGNED_IN = "logger.activity.user.signed.in";
+    private static final String MSG_SIGN_FAILED = "logger.activity.user.sign.failed";
 
     /* Keeps session lifecycle */
     private static final int SESSION_LIFECYCLE = 600;
 
+    /* Attributes and parameters */
     private static final String PARAM_USER = "user";
     private static final String PARAM_NAME_EMAIL = "email";
     private static final String PARAM_NAME_PASSWORD = "password";
     private static final String PARAM_FORWARD_LOGIN = "forward.common.login";
     private static final String PARAM_REDIRECT_COMMAND = "controller?executionCommand=REDIRECT";
+    private static final String PARAM_INCORRECT_MSG = "Incorrect login or password";
+    private static final String ATTRIBUTE_INCORRECT_MSG = "errorLoginPasswordMessage";
 
     /**
      * Implementation of login command
@@ -53,14 +61,16 @@ public class Login extends Command {
                     session.setMaxInactiveInterval(SESSION_LIFECYCLE);
                     session.setAttribute(PARAM_USER, user);
                 } catch (DAOException e) {
-                    throw new CommandException("An error has occurred when searching user in DB", e);
+                    throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR), e);
                 }
             }
         }
         if (user != null) {
+            logger.info(ResourceManager.getProperty(MSG_SIGNED_IN) + user.getId());
             setForward(PARAM_REDIRECT_COMMAND);
         } else {
-            request.setAttribute("errorLoginPasswordMessage", "Incorrect login or password");
+            logger.info(ResourceManager.getProperty(MSG_SIGN_FAILED) + email + "," + password);
+            request.setAttribute(ATTRIBUTE_INCORRECT_MSG, PARAM_INCORRECT_MSG);
             setForward(ResourceManager.getProperty(PARAM_FORWARD_LOGIN));
         }
     }

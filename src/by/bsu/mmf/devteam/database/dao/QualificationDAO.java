@@ -2,9 +2,9 @@ package by.bsu.mmf.devteam.database.dao;
 
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,14 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class QualificationDAO extends AbstractDAO {
-    /* Initializing database activity logger */
+    /** Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /** Logger messages */
+    private static final String ERROR_GET_QUALIFICATIONS = "logger.db.error.get.qualifications";
+    private static final String INFO_GET_QUALIFICATIONS = "logger.db.info.get.qualifications";
+    private static final String ERROR_DEFINE_QUALIFICATION = "logger.db.error.define.qualification";
+    private static final String INFO_DEFINE_QUALIFICATION = "logger.db.info.define.qualification";
 
     /**
      * This query searches unique list of qualifications.
@@ -47,10 +53,11 @@ public class QualificationDAO extends AbstractDAO {
                 list.add(resultSet.getString(1));
             }
         } catch (SQLException e) {
-            throw new DAOException(".", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_QUALIFICATIONS), e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_QUALIFICATIONS));
         return list;
     }
 
@@ -72,10 +79,11 @@ public class QualificationDAO extends AbstractDAO {
                 result = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_DEFINE_QUALIFICATION) + name, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_DEFINE_QUALIFICATION) + name);
         return result;
     }
 

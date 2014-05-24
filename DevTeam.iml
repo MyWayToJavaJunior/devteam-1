@@ -25,6 +25,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 8.0.0-RC10" level="application_server_libraries" />
     <orderEntry type="library" name="mysql-connector-java-5.1.30" level="project" />
     <orderEntry type="library" name="junit-4.7" level="project" />
+    <orderEntry type="library" name="bean-validator" level="project" />
   </component>
 </module>
 

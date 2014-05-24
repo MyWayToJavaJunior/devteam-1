@@ -3,6 +3,7 @@ package by.bsu.mmf.devteam.database.dao;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Project;
+import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -16,8 +17,20 @@ import java.util.List;
  * @since 1.0.0-alpha
  */
 public class ProjectDAO extends AbstractDAO {
-    /* Initializing database activity logger */
+    /** Initializing database activity logger */
     private static Logger logger = Logger.getLogger("db");
+
+    /** Logger messages */
+    private static final String ERROR_GET_MANAGER_PROJECTS = "logger.db.error.get.manager.projects";
+    private static final String INFO_GET_MANAGER_PROJECTS = "logger.db.info.get.manager.projects";
+    private static final String ERROR_SAVE_PROJECT = "logger.db.error.save.project";
+    private static final String INFO_SAVE_PROJECT = "logger.db.info.save.project";
+    private static final String ERROR_GET_PROJECT = "logger.db.error.get.project";
+    private static final String INFO_GET_PROJECT = "logger.db.info.get.project";
+    private static final String ERROR_GET_PROJECT_BY_ID = "logger.db.error.get.project.by.id";
+    private static final String INFO_GET_PROJECT_BY_ID = "logger.db.info.get.project.by.id";
+    private static final String ERROR_GET_LAST_PROJECT_ID = "logger.db.error.get.last.project.id";
+    private static final String INFO_GET_LAST_PROJECT_ID = "logger.db.info.get.last.project.id";
 
     /**
      * Keeps query which return project created by certain manager. <br />
@@ -75,10 +88,11 @@ public class ProjectDAO extends AbstractDAO {
                 list.add(project);
             }
         } catch (SQLException exception) {
-            throw new DAOException(".", exception);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_MANAGER_PROJECTS) + id, exception);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_MANAGER_PROJECTS) + id);
         return list;
     }
 
@@ -100,10 +114,11 @@ public class ProjectDAO extends AbstractDAO {
             preparedStatement.setInt(3, sid);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_SAVE_PROJECT) + name, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_SAVE_PROJECT) + sid);
         return getLastProjectId(mid);
     }
 
@@ -128,10 +143,11 @@ public class ProjectDAO extends AbstractDAO {
                 project.setSpecification(resultSet.getInt("sid"));
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_PROJECT) + sid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_PROJECT) + sid);
         return project;
     }
 
@@ -156,10 +172,11 @@ public class ProjectDAO extends AbstractDAO {
                 project.setSpecification(resultSet.getInt("sid"));
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_PROJECT_BY_ID) + pid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_PROJECT_BY_ID) + pid);
         return project;
     }
 
@@ -181,10 +198,11 @@ public class ProjectDAO extends AbstractDAO {
                 id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(",", e);
+            throw new DAOException(ResourceManager.getProperty(ERROR_GET_LAST_PROJECT_ID) + mid, e);
         } finally {
             connector.close();
         }
+        logger.info(ResourceManager.getProperty(INFO_GET_LAST_PROJECT_ID) + mid);
         return id;
     }
 

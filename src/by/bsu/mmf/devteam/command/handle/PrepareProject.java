@@ -8,10 +8,10 @@ import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
 import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Job;
 import by.bsu.mmf.devteam.resource.ResourceManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +22,31 @@ import java.util.Map;
  * @since 1.0.0-alpha
  */
 public class PrepareProject extends Command {
+    /* Initialize activity logger */
+    private static Logger logger = Logger.getLogger("activity");
+
+    /* Logger messages */
+    private static final String MSG_EXECUTE_ERROR = "logger.error.execute.prepare.project";
+    private static final String MSG_ACTIVITY = "logger.activity.prepare.project";
+
+    /* Attributes and parameters */
     private static final String PARAM_PROCESSING_STATUS = "processing";
     private static final String PARAM_ORDER_ID = "orderId";
     private static final String PARAM_SPECIFICATION_NAME = "specName";
     private static final String PARAM_SPECIFICATION_ID = "specId";
     private static final String PARAM_JOBS_LIST = "jobsList";
     private static final String PARAM_MAILS_MAP = "mailsMap";
+
+    /* Forward page */
     private static final String PARAM_FORWARD_PAGE = "forward.manager.create.project";
 
+    /**
+     * Implementation of command
+     *
+     * @param request HttpServletRequest object
+     * @param response HttpServletResponse object
+     * @throws CommandException If an error has occurred on runtime
+     */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         SpecificationDAO sDao = new SpecificationDAO();
@@ -48,9 +65,10 @@ public class PrepareProject extends Command {
             }
             request.setAttribute(PARAM_MAILS_MAP, mails);
         } catch (DAOException e) {
-            throw new CommandException(".", e);
+            throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR) + order, e);
         }
         setForward(ResourceManager.getProperty(PARAM_FORWARD_PAGE));
+        logger.info(ResourceManager.getProperty(MSG_ACTIVITY) + order);
     }
 
 }
