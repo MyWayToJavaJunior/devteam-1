@@ -1,5 +1,8 @@
 package by.bsu.mmf.devteam.logic.bean.user;
 
+import by.bsu.mmf.devteam.logic.observers.language.LanguageEvent;
+import by.bsu.mmf.devteam.logic.observers.language.LanguageObserver;
+
 /**
  * Bean object
  *
@@ -18,6 +21,16 @@ public class User {
 
     /* Keeps qualification */
     private String qualification;
+
+    /** Keeps language observer */
+    private LanguageObserver observer;
+
+    /**
+     * Constructor
+     */
+    public User() {
+        this.observer = new LanguageObserver();
+    }
 
     /**
      * Return user id
@@ -70,7 +83,9 @@ public class User {
      * @param language Default or selected language
      */
     public void setLanguage(String language) {
+        String lang = this.language;
         this.language = language;
+        notifyObserver(lang);
     }
 
     /**
@@ -90,6 +105,17 @@ public class User {
      */
     public void setQualification(String qualification) {
         this.qualification = qualification;
+    }
+
+    /**
+     * This method notify observer if language changed, BUT not initialized.
+     */
+    private void notifyObserver(String before) {
+        if (before != null) {
+            if (!before.equals(language)) {
+                observer.handle(new LanguageEvent(this));
+            }
+        }
     }
 
 }

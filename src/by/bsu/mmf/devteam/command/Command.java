@@ -1,6 +1,6 @@
 package by.bsu.mmf.devteam.command;
 
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

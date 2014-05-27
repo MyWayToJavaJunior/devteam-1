@@ -30,3 +30,13 @@ v2.2.0-beta
         - Add comments
         - Add verifiable beans
         - Add tests
+v2.3.0-beta
+    # new
+        - Complete order form validation
+        - Complete project form validation
+        - Add observer which handles changing UI language
+        - Add tests
+    # modify
+        - On managed bills changed view of table
+    # bugs
+        - Solved bug in validator prepared projects

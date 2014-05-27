@@ -1,11 +1,12 @@
 package by.bsu.mmf.devteam.database.dao;
 
 import by.bsu.mmf.devteam.database.connector.DBConnector;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Specification;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -222,10 +223,10 @@ public class SpecificationDAO extends AbstractDAO {
         try {
             preparedStatement = connector.getPreparedStatement(SQL_INSERT_NEW_SPECIFICATION);
             preparedStatement.setInt(1, id);
-            preparedStatement.setBytes(2, name.getBytes());
+            preparedStatement.setBytes(2, (new String(name.getBytes("UTF-8"), "CP1251")).getBytes());
             preparedStatement.setBytes(3, DEFAULT_SPECIFICATION_STATUS.getBytes());
             preparedStatement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | UnsupportedEncodingException e) {
             throw new DAOException(ResourceManager.getProperty(ERROR_SAVE_SPEC) + id, e);
         } finally {
             connector.close();

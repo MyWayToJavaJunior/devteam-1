@@ -1,9 +1,10 @@
 package by.bsu.mmf.devteam.logic.bean.verifiable;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,8 +17,13 @@ public class ProposedOrder {
     private String specification;
 
     @NotNull
+    @Min(value = 1)
+    private int count;
+
+    @NotNull
+    @Size(min = 1)
     @Valid
-    private Map<Integer, ProposedJob> jobs;
+    private ArrayList<ProposedJob> jobs;
 
     public String getSpecification() {
         return specification;
@@ -27,12 +33,20 @@ public class ProposedOrder {
         this.specification = specification;
     }
 
-    public Map<Integer, ProposedJob> getJobs() {
+    public ArrayList<ProposedJob> getJobs() {
         return jobs;
     }
 
-    public void setJobs(Map<Integer, ProposedJob> jobs) {
+    public void setJobs(ArrayList<ProposedJob> jobs) {
         this.jobs = jobs;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
 }

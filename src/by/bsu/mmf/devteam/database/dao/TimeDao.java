@@ -1,7 +1,7 @@
 package by.bsu.mmf.devteam.database.dao;
 
 import by.bsu.mmf.devteam.database.connector.DBConnector;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 

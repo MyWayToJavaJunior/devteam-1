@@ -1,10 +1,9 @@
 package by.bsu.mmf.devteam.command.navigate;
 
 import by.bsu.mmf.devteam.command.Command;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import by.bsu.mmf.devteam.resource.ResourceManager;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

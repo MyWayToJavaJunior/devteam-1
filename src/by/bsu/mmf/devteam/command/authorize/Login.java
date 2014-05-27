@@ -2,9 +2,14 @@ package by.bsu.mmf.devteam.command.authorize;
 
 import by.bsu.mmf.devteam.command.Command;
 import by.bsu.mmf.devteam.database.dao.UserDAO;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.logic.BusinessLogicException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.logic.bean.user.User;
+import by.bsu.mmf.devteam.logic.bean.verifiable.SignInForm;
+import by.bsu.mmf.devteam.logic.bean.verifiable.builder.VerifiableBuilder;
+import by.bsu.mmf.devteam.logic.bean.verifiable.validator.VerifiableValidator;
+import by.bsu.mmf.devteam.logic.builders.UserBuilder;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import by.bsu.mmf.devteam.util.Hasher;
 import org.apache.log4j.Logger;
@@ -33,8 +38,6 @@ public class Login extends Command {
 
     /* Attributes and parameters */
     private static final String PARAM_USER = "user";
-    private static final String PARAM_NAME_EMAIL = "email";
-    private static final String PARAM_NAME_PASSWORD = "password";
     private static final String PARAM_FORWARD_LOGIN = "forward.common.login";
     private static final String PARAM_REDIRECT_COMMAND = "controller?executionCommand=REDIRECT";
     private static final String PARAM_INCORRECT_MSG = "Incorrect login or password";
@@ -49,30 +52,30 @@ public class Login extends Command {
      */
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String email = request.getParameter(PARAM_NAME_EMAIL);
-        String password = request.getParameter(PARAM_NAME_PASSWORD);
-        UserDAO dao = new UserDAO();
+        SignInForm form = VerifiableBuilder.buildSignInForm(request);
         User user = (User)request.getSession().getAttribute(PARAM_USER);
         if (user == null) {
-            if (email != null && password != null) {
-                try {
-                    user = dao.getUser(email, Hasher.getMD5(password));
-                    HttpSession session = request.getSession();
-                    session.setMaxInactiveInterval(SESSION_LIFECYCLE);
-                    session.setAttribute(PARAM_USER, user);
-                } catch (DAOException e) {
-                    throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR), e);
-                }
+            try {
+                user = UserBuilder.buildUser(form);
+                setSessionLifecycle(request, user);
+            } catch (BusinessLogicException e) {
+                throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR), e);
             }
         }
         if (user != null) {
             logger.info(ResourceManager.getProperty(MSG_SIGNED_IN) + user.getId());
             setForward(PARAM_REDIRECT_COMMAND);
         } else {
-            logger.info(ResourceManager.getProperty(MSG_SIGN_FAILED) + email + "," + password);
+            logger.info(ResourceManager.getProperty(MSG_SIGN_FAILED) + form.getLogin() + "," + form.getPassword());
             request.setAttribute(ATTRIBUTE_INCORRECT_MSG, PARAM_INCORRECT_MSG);
             setForward(ResourceManager.getProperty(PARAM_FORWARD_LOGIN));
         }
+    }
+
+    private void setSessionLifecycle(HttpServletRequest request, User user) {
+        HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(SESSION_LIFECYCLE);
+        session.setAttribute(PARAM_USER, user);
     }
 
 }

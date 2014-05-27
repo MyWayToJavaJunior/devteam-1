@@ -1,11 +1,12 @@
 package by.bsu.mmf.devteam.database.dao;
 
 import by.bsu.mmf.devteam.database.connector.DBConnector;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.logic.bean.entity.Job;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class JobDAO extends AbstractDAO {
     private static final String INFO_SET_JOB_COST = "logger.db.info.set.job.cost";
     private static final String ERROR_JOB_WHERE_BUSY = "logger.db.error.get.job.where.emp.busy";
     private static final String INFO_JOB_WHERE_BUSY = "logger.db.info.get.job.where.emp.busy";
+    private static final String ERROR_COST_OF_SPEC_JOBS = "logger.db.error.get.total.spec.cost";
 
     /**
      * Keeps query which return the number of jobs in specification. <br />
@@ -69,6 +71,13 @@ public class JobDAO extends AbstractDAO {
      */
     private static final String SQL_FIND_JOB_WHERE_BUSY_EMPLOYEE =
             "SELECT * FROM jobs WHERE id = (SELECT jid FROM employment WHERE uid = ?)";
+
+    /**
+     * Keeps query which return total cost of all jobs certain specification. <br />
+     * Requires to set specification id.
+     */
+    private static final String SQL_FIND_TOTAL_COST_OF_SPEC_JOBS =
+            "SELECT SUM(cost) FROM jobs WHERE sid = ?";
 
     /**
      * Return number of jobs in specification created by customer
@@ -141,11 +150,11 @@ public class JobDAO extends AbstractDAO {
         try {
             preparedStatement = connector.getPreparedStatement(SQL_INSERT_JOB);
             preparedStatement.setInt(1, sid);
-            preparedStatement.setBytes(2, name.getBytes());
+            preparedStatement.setBytes(2, (new String(name.getBytes("UTF-8"), "CP1251")).getBytes());
             preparedStatement.setInt(3, specialist);
             preparedStatement.setInt(4, qualification);
             preparedStatement.execute();
-        } catch (SQLException e) {
+        } catch (SQLException | UnsupportedEncodingException e) {
             throw new DAOException(ResourceManager.getProperty(ERROR_SAVE_JOB) + name, e);
         } finally {
             connector.close();
@@ -201,6 +210,31 @@ public class JobDAO extends AbstractDAO {
         }
         logger.info(ResourceManager.getProperty(INFO_JOB_WHERE_BUSY) + id);
         return job;
+    }
+
+    /**
+     * This method return sum of jobs cost of certain specification.
+     *
+     * @param sid Specification id
+     * @return Total cost
+     * @throws DAOException object if execution of query is failed
+     */
+    public int getTotalCostOfSpecJobs(int sid) throws DAOException {
+        int cost = 0;
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_FIND_TOTAL_COST_OF_SPEC_JOBS);
+            preparedStatement.setInt(1, sid);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                cost = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(ResourceManager.getProperty(ERROR_COST_OF_SPEC_JOBS), e);
+        } finally {
+            connector.close();
+        }
+        return cost;
     }
 
 }

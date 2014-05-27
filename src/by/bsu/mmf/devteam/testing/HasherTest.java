@@ -1,5 +1,3 @@
-package by.bsu.mmf.devteam.testing;
-
 import by.bsu.mmf.devteam.util.Hasher;
 import org.junit.Before;
 import org.junit.Test;

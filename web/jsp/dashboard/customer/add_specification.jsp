@@ -31,9 +31,19 @@
                     <form id="order" method="get" action="controller">
                         <input type="hidden" name="executionCommand" value="CREATE_ORDER">
                         <input type="hidden" id="jobsCount" name="jobsCount" value="1">
-                        <label class="alert-success">
-                            ${operationResult}
-                        </label>
+
+                        <!-- Result message -->
+                        <c:if test="${isFormCorrect eq 'true'}">
+                            <div class="alert alert-success">
+                                <fmt:message key="jsp.alert.order.form.correction.true" bundle="${msg}"/>
+                            </div>
+                        </c:if>
+                        <c:if test="${isFormCorrect eq 'false'}">
+                            <div class="alert alert-danger">
+                                <fmt:message key="jsp.alert.order.form.correction.false" bundle="${msg}"/>
+                            </div>
+                        </c:if>
+
                         <input type="text" name="nameOfNewSpec" class="form-control"
                                placeholder="<fmt:message key="jsp.customer.placeholder.specification.name" bundle="${msg}"/>">
                         <div id="jobs" class="row" style="padding: 12px 0 0 0;">

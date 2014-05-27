@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
  */
 public class SignInForm {
     @NotNull(message = "Login can't be empty")
-    @Email(message = "")    // Bad work!
+    @Email(message = "Incorrect email")    // Bad work!
     private String login;
 
     @NotNull(message = "Password can't be empty")

@@ -38,6 +38,13 @@
             </h2>
             <div class="table-responsive">
 
+                <!-- Alert block -->
+                <c:if test="${isFormCorrect eq 'false'}">
+                    <div class="alert alert-danger">
+                        <fmt:message key="jsp.alert.project.form.correction.false" bundle="${msg}"/>
+                    </div>
+                </c:if>
+
                 <div class="row">
                     <div class="col-xs-1">
                         <label>№</label>

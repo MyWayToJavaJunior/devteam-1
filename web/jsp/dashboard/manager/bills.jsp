@@ -37,7 +37,7 @@
                                 <fmt:message key="jsp.manager.bills.table.cost" bundle="${msg}"/>
                             </th>
                             <th>
-                                <fmt:message key="jsp.manager.bills.table.customer" bundle="${msg}"/>
+                                <fmt:message key="jsp.manager.bills.table.project" bundle="${msg}"/>
                             </th>
                         </tr>
                         </thead>
@@ -47,7 +47,7 @@
                                 <td><c:out value="${status.count}"/></td>
                                 <td><c:out value="${bill.name}"/></td>
                                 <td><c:out value="${bill.sum}"/></td>
-                                <td>Customer</td>
+                                <td><c:out value="${namesMap[bill.id]}"/></td>
                             </tr>
                         </c:forEach>
                         </tbody>

@@ -1,7 +1,7 @@
 package by.bsu.mmf.devteam.command.navigate;
 
 import by.bsu.mmf.devteam.command.Command;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 

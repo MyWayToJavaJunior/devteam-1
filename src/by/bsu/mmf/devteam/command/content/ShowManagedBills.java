@@ -2,14 +2,20 @@ package by.bsu.mmf.devteam.command.content;
 
 import by.bsu.mmf.devteam.command.Command;
 import by.bsu.mmf.devteam.database.dao.BillDAO;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.database.dao.ProjectDAO;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
+import by.bsu.mmf.devteam.logic.bean.entity.Bill;
+import by.bsu.mmf.devteam.logic.bean.entity.Project;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -27,6 +33,7 @@ public class ShowManagedBills extends Command {
     /* Attributes and parameters */
     private static final String ATTRIBUTE_USER = "user";
     private static final String PARAM_BILLS_LIST = "billsList";
+    private static final String PARAM_NAMES_MAP  = "namesMap";
 
     /* Forward page */
     private static final String FORWARD_MANAGED_BILLS = "forward.manager.managed.bills";
@@ -42,8 +49,15 @@ public class ShowManagedBills extends Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         User user = (User)request.getSession().getAttribute(ATTRIBUTE_USER);
         BillDAO bDao = new BillDAO();
+        ProjectDAO pDao = new ProjectDAO();
+        Map<Integer, String> names = new HashMap<>();
         try {
-            request.setAttribute(PARAM_BILLS_LIST, bDao.getManagerBills(user.getId()));
+            List<Bill> bills = bDao.getManagerBills(user.getId());
+            for(Bill bill : bills) {
+                names.put(bill.getId(), pDao.getProjectById(bill.getPid()).getName());
+            }
+            request.setAttribute(PARAM_BILLS_LIST, bills);
+            request.setAttribute(PARAM_NAMES_MAP, names);
         } catch (DAOException e) {
             throw new CommandException(ResourceManager.getProperty(MSG_EXECUTE_ERROR) + user.getId(), e);
         }

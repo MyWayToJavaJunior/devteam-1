@@ -1,7 +1,7 @@
 package by.bsu.mmf.devteam.command.language;
 
 import by.bsu.mmf.devteam.command.Command;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
@@ -39,14 +39,7 @@ public class ChangeLanguage extends Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         User user = (User)request.getSession().getAttribute(ATTRIBUTE_USER);
         String lang = request.getParameter(PARAM_LANGUAGE_CHOICE);
-        switch (lang) {
-            case "ru":
-                user.setLanguage("ru");
-                break;
-            default:
-                user.setLanguage("en");
-                break;
-        }
+        user.setLanguage(lang.equals("ru") ? "ru" : "en");
         setForward(ResourceManager.getProperty(REDIRECT_TO_DEFAULT_PAGE));
         logger.info(ResourceManager.getProperty(MSG_ACTIVITY) + user.getId() + ", " + lang);
     }

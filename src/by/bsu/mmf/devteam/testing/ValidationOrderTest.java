@@ -1,5 +1,3 @@
-package by.bsu.mmf.devteam.testing;
-
 import by.bsu.mmf.devteam.logic.bean.verifiable.ProposedOrder;
 import org.junit.Before;
 import org.junit.Test;

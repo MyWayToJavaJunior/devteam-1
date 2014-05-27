@@ -1,9 +1,9 @@
 package by.bsu.mmf.devteam.database.dao;
 
-import by.bsu.mmf.devteam.exception.infrastructure.DatabaseDataException;
+import by.bsu.mmf.devteam.exception.data.DatabaseDataException;
 import by.bsu.mmf.devteam.logic.bean.user.Role;
 import by.bsu.mmf.devteam.database.connector.DBConnector;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.logic.bean.user.RoleDefiner;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import by.bsu.mmf.devteam.resource.ResourceManager;
@@ -37,6 +37,8 @@ public class UserDAO extends AbstractDAO {
     private static final String INFO_TAKE_EMPLOYEE = "logger.db.info.take.employee";
     private static final String ERROR_IS_FREE_EMPLOYEE = "logger.db.error.is.free.employee";
     private static final String INFO_IS_FREE_EMPLOYEE = "logger.db.info.is.free.employee";
+    private static final String ERROR_IS_FREE_EMPLOYEE_MAIL = "logger.db.error.is.free.employee.mail";
+    private static final String INFO_IS_FREE_EMPLOYEE_MAIL = "logger.db.info.is.free.employee.mail";
     private static final String ERROR_GET_USER_MAIL = "logger.db.error.get.user.mail";
     private static final String INFO_GET_USER_MAIL = "logger.db.info.get.user.mail";
     private static final String ERROR_GET_WORKING_MAILS = "logger.db.error.get.users.working.on.job";
@@ -95,6 +97,13 @@ public class UserDAO extends AbstractDAO {
             "SELECT jid FROM employment WHERE uid = ?";
 
     /**
+     * This query searches employee status. <br />
+     * Requires to set user mail.
+     */
+    private static final String SQL_CHECK_STATUS_BY_MAIL =
+            "SELECT jid FROM employment INNER JOIN users ON employment.uid = users.id WHERE users.mail = ?";
+
+    /**
      * This query searches user mail by user id.
      */
     private static final String SQL_FIND_USER_MAIL_BY_ID =
@@ -111,6 +120,13 @@ public class UserDAO extends AbstractDAO {
      */
     private static final String SQL_EXEMPT_EMPLOYEES_BY_SPECIFICATION_ID =
             "UPDATE employment SET jid = 0 WHERE jid IN (SELECT id FROM jobs WHERE sid = ?)";
+
+    /**
+     * This query change user interface language. <br />
+     * Requires to set language and user id.
+     */
+    private static final String SQL_CHANGE_UI_LANGUAGE =
+            "UPDATE users SET `language` = ? WHERE id = ?";
 
     /**
      * Return hashed user password
@@ -278,6 +294,34 @@ public class UserDAO extends AbstractDAO {
     }
 
     /**
+     * This method checks employee status using mail.
+     *
+     * @param mail Employee mail
+     * @return True if employee is free, otherwise false
+     * @throws DAOException object if execution of query is failed
+     */
+    public boolean isEmployeeFree(String mail) throws DAOException {
+        boolean status = false;
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_CHECK_STATUS_BY_MAIL);
+            preparedStatement.setBytes(1, mail.getBytes());
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                if (resultSet.getInt(1) != 0) {
+                    status = true;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(ResourceManager.getProperty(ERROR_IS_FREE_EMPLOYEE_MAIL) + mail, e);
+        } finally {
+            connector.close();
+        }
+        logger.info(ResourceManager.getProperty(INFO_IS_FREE_EMPLOYEE_MAIL) + mail);
+        return status;
+    }
+
+    /**
      * This method returns user mail
      *
      * @param id User id
@@ -347,6 +391,20 @@ public class UserDAO extends AbstractDAO {
             connector.close();
         }
         logger.info(ResourceManager.getProperty(INFO_EXEMPT_EMPLOYEES) + sid);
+    }
+
+    public void changeUILanguage(String lang, int uid) throws DAOException {
+        connector = new DBConnector();
+        try {
+            preparedStatement = connector.getPreparedStatement(SQL_CHANGE_UI_LANGUAGE);
+            preparedStatement.setBytes(1, lang.getBytes());
+            preparedStatement.setInt(2, uid);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DAOException("", e);
+        } finally {
+            connector.close();
+        }
     }
 
 }

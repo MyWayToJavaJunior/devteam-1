@@ -2,8 +2,8 @@ package by.bsu.mmf.devteam.command.content;
 
 import by.bsu.mmf.devteam.command.Command;
 import by.bsu.mmf.devteam.database.dao.QualificationDAO;
-import by.bsu.mmf.devteam.exception.infrastructure.CommandException;
-import by.bsu.mmf.devteam.exception.infrastructure.DAOException;
+import by.bsu.mmf.devteam.exception.logic.CommandException;
+import by.bsu.mmf.devteam.exception.data.DAOException;
 import by.bsu.mmf.devteam.logic.bean.user.User;
 import by.bsu.mmf.devteam.resource.ResourceManager;
 import org.apache.log4j.Logger;
